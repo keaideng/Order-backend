@@ -1,5 +1,7 @@
+import { secretKey } from './../../config';
 // 商家验证接口
 import Router from "koa-router"
+import jsonwebtoken from 'jsonwebtoken'
 import flq from "../../SQLConnect"
 import validator from '../../middleware/validator'
 import { registerRules } from '../../rules/authRules'
@@ -9,8 +11,15 @@ const shop_user = flq.from('shop_user')
 const router = new Router({ prefix: '/auth' })
 
 // 商家登录
-router.post('/login', async (ctx) => {
-    console.log('登录成功')
+router.post('/login', validator(registerRules), async (ctx) => {
+     // 解析参数字段
+     const { phone, password } = ctx.request.body
+    //  用户名与密码
+    const data =  await shop_user.where({ phone }).first()
+    // 判断data是否有
+    if (!data) return ctx.error('手机号或密码错误', 302)
+    // 保存当前用户状态
+    jsonwebtoken.sign({ uid: data.uid }, secretKey, { expiresIn: '1y' })
     ctx.success()
 })
 
