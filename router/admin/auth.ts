@@ -19,8 +19,8 @@ router.post('/login', validator(registerRules), async (ctx) => {
     // 判断data是否有
     if (!data) return ctx.error('手机号或密码错误', 302)
     // 保存当前用户状态
-    jsonwebtoken.sign({ uid: data.uid }, secretKey, { expiresIn: '1y' })
-    ctx.success()
+    const token = jsonwebtoken.sign({ uid: data.uid }, secretKey, { expiresIn: '1d' })
+    ctx.success(token)
 })
 
 // 商家注册
