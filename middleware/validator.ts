@@ -1,7 +1,7 @@
 // 校验参数中间件
 import { Context, Next } from "koa"
 import Scheme, { Rules } from 'async-validator'
-import { filterKeys } from './../utils/index';
+import { filterKeys } from './../utils';
 
 export default (rules: Rules) => {
   return async function(ctx: Context, next: Next) {
