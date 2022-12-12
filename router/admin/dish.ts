@@ -1,4 +1,4 @@
-import { dishUnitRules ,dishCateRules  } from './../../rules/dishRules';
+import { dishUnitRules ,dishCateRules, dishCateRules2  } from './../../rules/dishRules';
 // 菜品管理模块接口
 import Router from "koa-router";
 import validator from "../../middleware/validator";
@@ -39,9 +39,24 @@ router.post('/category', validator(dishCateRules), async (ctx) => {
 })
 
 // 修改类目
+router.put('/category', validator(dishCateRules2), async (ctx) => {
+    // 需要的参数【id， lable?, value?, rank?】
+    const { uid } =  ctx.state.user
+    const { id, label } = ctx.data
+    // 验证label唯一性
+    const res = await dish_category.where({ uid, label }).first()
+    if (res && res.id != id) return ctx.error('label重复', 202)
+  // 2. 执行修改操作
+  await dish_category.where({ uid, id }).set(ctx.data).update()
+  // 3. 修改对应label的菜品
+  if (!res) {
+    await dish_data.where({ uid, cid: id }).set({ category: label }).update()
+  }
+  ctx.success()
+})
 
 // 删除类目
-router.delete('/category/:id',validator(dishCateRules) , async (ctx) => {
+router.delete('/category/:id', async (ctx) => {
     // 解析参数
     const { id } = ctx.params
     const { uid } = ctx.state.user
