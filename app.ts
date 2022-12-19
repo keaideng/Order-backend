@@ -25,7 +25,7 @@ app.use(abnormal())
 app.use(result())
 
 // 开启JWT认证拦截
-app.use(JWT({ secret: secretKey }).unless({ path: /\/admin\/auth/ }))
+app.use(JWT({ secret: secretKey }).unless({ path: /(\/admin\/auth)|(\/mini)/ }))
 
 // 开启路由并开放所有请求方法
 app.use(router.routes()).use(router.allowedMethods())
