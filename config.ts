@@ -10,6 +10,6 @@ export const qiniu_url = 'http://rmetkpf5r.hn-bkt.clouddn.com/'    // 访问域�
 // 小程序appid
 export const wx_appid = 'wx08fed69f890c803f'
 // 小程序secret
-export const wx_secret = '7895f625c54f571b75ebf21d98f4ad4e'
+export const wx_secret = '858d63be3b7e7834166897e16d4e32da'
 // 小程序请求根地址
 export const wx_url = 'https://api.weixin.qq.com'
